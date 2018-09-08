@@ -5,7 +5,9 @@ K-Nearest Neighbors Algorithm in Parallel using Julia
 -----------------------------------------------------
 
 **K-Nearest Neighbors** algorithm known of being computationally intensive because the distance to every point has to be calculated. 
+
 Here we're going to use **Julia**'s parallel computing power to fit **KNN algorithm** on Census Income dataset to predict whether income exceeds $50K ...
+
 Data can be downloaded from <https://archive.ics.uci.edu/ml/machine-learning-databases/adult/> ; they're two datasets, training and test.
 
 ###### We will be using Julia version 0.6.4
