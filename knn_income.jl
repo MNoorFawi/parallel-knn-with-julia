@@ -1,4 +1,5 @@
 using DataFrames
+
 println("### READING DATA ###")
 adult_train = readtable("adult.data", separator = ',', header = false);
 adult_test = readtable("adult.test", separator = ',', header = false, skipstart = 1);
@@ -116,3 +117,5 @@ correct = @parallel (+) for i in 1:size(xtest, 2)
 end;
 println((:test_accuracy, correct / length(ytest)))
 println("")
+
+
