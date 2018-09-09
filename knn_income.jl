@@ -101,21 +101,23 @@ println("# Get predictions and accuracy on train and test data using $(k) k")
 predictions = @parallel (vcat) for i in 1:size(xtrain, 2)
  assign_label(xtrain, ytrain, k, i)
 end;
-# calculate accuracy
-correct = @parallel (+) for i in 1:size(xtrain, 2)
- assign_label(xtrain, ytrain, k, i) == ytrain[i]
-end;
-println((:train_accuracy, correct / length(ytrain)))
+# calculate accuracy without getting predictions
+# correct = @parallel (+) for i in 1:size(xtrain, 2)
+#  assign_label(xtrain, ytrain, k, i) == ytrain[i]
+# end;
+# println((:train_accuracy, correct / length(ytrain)))
+println((:train_accuracy, sum(predictions .== ytrain) / length(ytrain)))
 println("")
 
 predictions = @parallel (vcat) for i in 1:size(xtest, 2)
  assign_label(xtest, ytest, k, i)
 end;
-# calculate accuracy
-correct = @parallel (+) for i in 1:size(xtest, 2)
- assign_label(xtest, ytest, k, i) == ytest[i]
-end;
-println((:test_accuracy, correct / length(ytest)))
+# calculate accuracy 
+# correct = @parallel (+) for i in 1:size(xtest, 2)
+#  assign_label(xtest, ytest, k, i) == ytest[i]
+# end;
+# println((:test_accuracy, correct / length(ytest)))
+println((:test_accuracy, sum(predictions .== ytest) / length(ytest)))
 println("")
 
 ### FINAL NOTE: in Julia v1 @distributed along with SharedArray s are used ...
