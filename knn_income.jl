@@ -82,12 +82,12 @@ end;
 
 @everywhere function assign_label(x, y, k, i)
 	knn = KNN(x, i, k) 
-	most_common = Array{Int64}
+	most_common = Array{UInt8}
 	Mean = mean(y[knn])
 	if Mean >= 0.5
-		most_common = 1
+		most_common = map(UInt8, 1)
 	else 
-		most_common = 0
+		most_common = map(UInt8, 0)
 	end
 	return most_common
 end;
@@ -118,4 +118,5 @@ end;
 println((:test_accuracy, correct / length(ytest)))
 println("")
 
+### FINAL NOTE: in Julia v1 @distributed along with SharedArray s are used ...
 
