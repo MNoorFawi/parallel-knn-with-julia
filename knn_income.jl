@@ -61,11 +61,11 @@ println((:number_of_processes, nprocs()))
 	return sqrt(dist)
 end;
 
-@everywhere function KNN(x, i, k)
+@everywhere function KNN(x, tst, i, k)
 	nrows, ncols = size(x)
 	a = Array{Float32}(nrows)
 	for indx in 1:nrows
-		a[indx] = x[indx, i]
+		a[indx] = tst[indx, i]
 	end
 	b = Array{Float32}(nrows)
 	dist = Array{Float32}(ncols) 
@@ -80,9 +80,9 @@ end;
 	return knneighbors
 end;
 
-@everywhere function assign_label(x, y, k, i)
-	knn = KNN(x, i, k) 
-	most_common = Array{UInt8}
+@everywhere function assign_label(x, tst, y, k, i)
+	knn = KNN(x, tst, i, k) 
+	most_common = Array{UInt8}(length(i))
 	Mean = mean(y[knn])
 	if Mean >= 0.5
 		most_common = map(UInt8, 1)
@@ -99,22 +99,22 @@ println("")
 
 println("# Get predictions and accuracy on train and test data using $(k) k")
 predictions = @parallel (vcat) for i in 1:size(xtrain, 2)
- assign_label(xtrain, ytrain, k, i)
+ assign_label(xtrain, xtrain, ytrain, k, i)
 end;
 # calculate accuracy without getting predictions
 # correct = @parallel (+) for i in 1:size(xtrain, 2)
-#  assign_label(xtrain, ytrain, k, i) == ytrain[i]
+#  assign_label(xtrain, xtrain, ytrain, k, i) == ytrain[i]
 # end;
 # println((:train_accuracy, correct / length(ytrain)))
 println((:train_accuracy, sum(predictions .== ytrain) / length(ytrain)))
 println("")
 
 predictions = @parallel (vcat) for i in 1:size(xtest, 2)
- assign_label(xtest, ytest, k, i)
+ assign_label(xtrain, xtest, ytrain, k, i)
 end;
 # calculate accuracy 
 # correct = @parallel (+) for i in 1:size(xtest, 2)
-#  assign_label(xtest, ytest, k, i) == ytest[i]
+#  assign_label(xtrain, xtest, ytrain, k, i) == ytest[i]
 # end;
 # println((:test_accuracy, correct / length(ytest)))
 println((:test_accuracy, sum(predictions .== ytest) / length(ytest)))
