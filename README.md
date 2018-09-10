@@ -37,5 +37,5 @@ $ julia knn_income.jl
 # Get predictions and accuracy on train and test data using 40 k
 (:train_accuracy, 0.8310456866255553)
 
-(:test_accuracy, 0.8288844621513944)
+(:test_accuracy, 0.8301460823373173)
 ```
