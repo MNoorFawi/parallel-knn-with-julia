@@ -3,6 +3,7 @@ using DataFrames
 println("### READING DATA ###")
 adult_train = readtable("adult.data", separator = ',', header = false);
 adult_test = readtable("adult.test", separator = ',', header = false, skipstart = 1);
+# or with CSV.read from CSV (using CSV; CSV.read("file"))
 println((:data_shape, size(adult_train), size(adult_test)))
 println("")
 
